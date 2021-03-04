@@ -2,7 +2,12 @@ package br.unitins.saude.controller;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
+import br.unitins.saude.application.JPAUtil;
+import br.unitins.saude.application.Util;
 import br.unitins.saude.model.Paciente;
 
 @Named
@@ -22,8 +27,15 @@ public class PacienteController {
 	}
 	
 	public void salvar() {
-		System.out.println("Entrou no salvar");
-		System.out.println(getPaciente());
+		EntityManager em = JPAUtil.getEntityManager();
+		
+		em.getTransaction().begin();
+		getPaciente().setId(3);
+		em.merge(getPaciente());
+		em.getTransaction().commit();
+		
+		Util.addErrorMessage("Cadastro realizado com sucesso.");
+		System.out.println("Funcionou.");
 	}
 	
 	public void limpar() {

@@ -9,6 +9,7 @@
 </h:head>
 <h:body>
 	<h:form>
+ 		<p:growl id="growl" showDetail="true" />
 		<p:panel header="Cadastro de Paciente" >
 			<h:panelGrid columns="2">
 			
@@ -24,7 +25,7 @@
 				<p:commandButton 
 					value="Salvar" 
 					actionListener="#{pacienteController.salvar}"
-					process="@this itcpf"
+					process="@this @form"
 					update="@form"/>
 				<p:commandButton 
 					value="Limpar"
