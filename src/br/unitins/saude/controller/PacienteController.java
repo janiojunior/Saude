@@ -1,9 +1,11 @@
 package br.unitins.saude.controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import br.unitins.saude.application.RepositoryException;
@@ -12,9 +14,10 @@ import br.unitins.saude.model.Paciente;
 import br.unitins.saude.repository.PacienteRepository;
 
 @Named
-@RequestScoped
-public class PacienteController {
+@ViewScoped
+public class PacienteController implements Serializable {
 
+	private static final long serialVersionUID = 593324931325951976L;
 	private List<Paciente> listaPaciente;
 	private Paciente paciente = null;
 
@@ -59,22 +62,19 @@ public class PacienteController {
 		setPaciente(paciente);
 	}
 	
-//	public void pesquisar() {
-//		PacienteRepository repo = new PacienteRepository();
-//		try {
-//			listaPaciente = repo.findAll();
-//		} catch (RepositoryException e) {
-//			
-//		}
-//	}
-	
-	public List<Paciente> getListaPaciente() {
+	public void pesquisar() {
+		System.out.println("Pesquisar");
 		PacienteRepository repo = new PacienteRepository();
 		try {
 			listaPaciente = repo.findAll();
 		} catch (RepositoryException e) {
-			listaPaciente = new ArrayList<Paciente>();
+			
 		}
+	}
+	
+	public List<Paciente> getListaPaciente() {
+		if (listaPaciente==null)
+			listaPaciente = new ArrayList<Paciente>();
 		return listaPaciente;
 	}
 

@@ -38,25 +38,37 @@
 					update="@form"/>
 			</f:facet>
 		</p:panel>
-		
-		<p:dialog  header="Header" widgetVar="dlg" minHeight="40" width="350" showEffect="fade" modal="true">
-			<p:dataTable id="dataTable" 
-						 value="#{pacienteController.listaPaciente}"
-						 var="obj">
-				<p:column headerText="CPF">
-					<p:outputLabel value="#{obj.cpf}"/>
-				</p:column>			
-				<p:column headerText="Nome">
-					<p:outputLabel value="#{obj.nome}"/>
-				</p:column>	
-				<p:column headerText="Ação">
-					<p:commandButton value="Editar" 
-						actionListener="#{pacienteController.editar(obj)}"
-						process="@this @form"
-						update="@form"/>
-				</p:column>			
-			</p:dataTable>
-		</p:dialog>
+			<p:dialog id="dialog"  header="Cosulta de Paciente" widgetVar="dlg" 
+				height="300" width="500" 
+				showEffect="fade" modal="true">
+				
+				<p:inputText/> 
+				<p:commandButton value="Pesquisar" 
+						actionListener="#{pacienteController.pesquisar}"
+						process="@this"
+						update="dataTable"/>
+						
+				<p:dataTable id="dataTable" 
+							 value="#{pacienteController.listaPaciente}"
+							 var="obj">
+					<p:column >
+						<f:facet name="header">CPF</f:facet>
+						<p:outputLabel value="#{obj.cpf}"/>
+					</p:column>			
+					<p:column >
+						<f:facet name="header">Nome</f:facet>
+						<p:outputLabel value="#{obj.nome}"/>
+					</p:column>	
+					<p:column >
+						<f:facet name="header">Ação</f:facet>
+						<p:commandButton value="Editar" 
+			    			actionListener="#{pacienteController.editar(obj)}" 
+			    			process="@this"
+			    			update="@form "/>
+					</p:column>			
+				</p:dataTable>
+				
+			</p:dialog>
 	</h:form>
 	
 </h:body>
