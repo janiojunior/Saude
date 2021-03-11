@@ -1,19 +1,21 @@
 package br.unitins.saude.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
-import br.unitins.saude.application.JPAUtil;
+import br.unitins.saude.application.RepositoryException;
 import br.unitins.saude.application.Util;
 import br.unitins.saude.model.Paciente;
+import br.unitins.saude.repository.PacienteRepository;
 
 @Named
 @RequestScoped
 public class PacienteController {
 
+	private List<Paciente> listaPaciente;
 	private Paciente paciente = null;
 
 	public Paciente getPaciente() {
@@ -27,20 +29,53 @@ public class PacienteController {
 	}
 	
 	public void salvar() {
-		EntityManager em = JPAUtil.getEntityManager();
-		
-		em.getTransaction().begin();
-		getPaciente().setId(3);
-		em.merge(getPaciente());
-		em.getTransaction().commit();
-		
-		Util.addErrorMessage("Cadastro realizado com sucesso.");
-		System.out.println("Funcionou.");
+		try {
+			PacienteRepository repo = new PacienteRepository();
+			repo.save(getPaciente());
+			limpar();
+			Util.addInfoMessage("Cadastro realizado com sucesso.");
+		} catch (RepositoryException e) {
+			Util.addErrorMessage(e.getMessage());
+		}
+	}
+	
+	public void excluir() {
+		try {
+			PacienteRepository repo = new PacienteRepository();
+			repo.remove(getPaciente());
+			Util.addInfoMessage("Paciente removido com sucesso.");
+		} catch (RepositoryException e) {
+			Util.addErrorMessage(e.getMessage());
+		}
 	}
 	
 	public void limpar() {
 		System.out.println("Entrou no limpar");
 		paciente = null;
+	}
+	
+	public void editar(Paciente paciente) {
+		System.out.println("Entrou no editar");
+		setPaciente(paciente);
+	}
+	
+//	public void pesquisar() {
+//		PacienteRepository repo = new PacienteRepository();
+//		try {
+//			listaPaciente = repo.findAll();
+//		} catch (RepositoryException e) {
+//			
+//		}
+//	}
+	
+	public List<Paciente> getListaPaciente() {
+		PacienteRepository repo = new PacienteRepository();
+		try {
+			listaPaciente = repo.findAll();
+		} catch (RepositoryException e) {
+			listaPaciente = new ArrayList<Paciente>();
+		}
+		return listaPaciente;
 	}
 
 }

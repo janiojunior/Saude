@@ -13,7 +13,7 @@
 		<p:panel header="Cadastro de Paciente" >
 			<h:panelGrid columns="2">
 			
-				<p:outputLabel value="Cpf: "/>
+				<p:commandLink value="Cpf: " onclick="PF('dlg').show()"/>
 				<p:inputText id="itcpf" value="#{pacienteController.paciente.cpf}"/>
 				
 				<p:outputLabel value="Nome: "/>
@@ -21,10 +21,14 @@
 				
 			</h:panelGrid>
 			<f:facet name="footer">
-				
 				<p:commandButton 
 					value="Salvar" 
 					actionListener="#{pacienteController.salvar}"
+					process="@this @form"
+					update="@form"/>
+				<p:commandButton 
+					value="Excluir" 
+					actionListener="#{pacienteController.excluir}"
 					process="@this @form"
 					update="@form"/>
 				<p:commandButton 
@@ -34,6 +38,25 @@
 					update="@form"/>
 			</f:facet>
 		</p:panel>
+		
+		<p:dialog  header="Header" widgetVar="dlg" minHeight="40" width="350" showEffect="fade" modal="true">
+			<p:dataTable id="dataTable" 
+						 value="#{pacienteController.listaPaciente}"
+						 var="obj">
+				<p:column headerText="CPF">
+					<p:outputLabel value="#{obj.cpf}"/>
+				</p:column>			
+				<p:column headerText="Nome">
+					<p:outputLabel value="#{obj.nome}"/>
+				</p:column>	
+				<p:column headerText="Ação">
+					<p:commandButton value="Editar" 
+						actionListener="#{pacienteController.editar(obj)}"
+						process="@this @form"
+						update="@form"/>
+				</p:column>			
+			</p:dataTable>
+		</p:dialog>
 	</h:form>
 	
 </h:body>
