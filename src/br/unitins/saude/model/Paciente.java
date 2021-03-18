@@ -2,30 +2,18 @@ package br.unitins.saude.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
-public class Paciente {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class Paciente extends DefaultEntity<Paciente>{
 	
+	private static final long serialVersionUID = 8955499426576665422L;
+
 	@Column(unique = true, length = 14)
 	private String cpf;
 	
 	@Column(length = 120)
 	private String nome;
 	
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public String getCpf() {
 		return cpf;
 	}
@@ -44,7 +32,7 @@ public class Paciente {
 
 	@Override
 	public String toString() {
-		return "Paciente [id=" + id + ", cpf=" + cpf + ", nome=" + nome + "]";
+		return "Paciente [id=" + getId() + ", cpf=" + cpf + ", nome=" + nome + "]";
 	}
 	
 }

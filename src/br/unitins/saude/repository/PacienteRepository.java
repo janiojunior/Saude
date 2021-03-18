@@ -9,43 +9,18 @@ import br.unitins.saude.application.JPAUtil;
 import br.unitins.saude.application.RepositoryException;
 import br.unitins.saude.model.Paciente;
 
-public class PacienteRepository {
+public class PacienteRepository extends Repository<Paciente> {
 	
-	public void save(Paciente paciente) throws RepositoryException {
-		try {
-			EntityManager em = JPAUtil.getEntityManager();
-			
-			em.getTransaction().begin();
-			
-			// insert or update
-			em.merge(paciente);
-			
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			System.out.println("Erro ao executar o método Save do Repository");
-			throw new RepositoryException("Erro ao Salvar");
-		}
-		
+	public PacienteRepository() {
+		super(JPAUtil.getEntityManager());
 	}
 	
-	public void remove(Paciente paciente) throws RepositoryException {
-		try {
-			EntityManager em = JPAUtil.getEntityManager();
-			
-			em.getTransaction().begin();
-			
-			// insert or update
-			em.remove(paciente);
-			
-			em.getTransaction().commit();
-		} catch (Exception e) {
-			System.out.println("Erro ao executar o método Remove do Repository");
-			throw new RepositoryException("Erro ao Remover");
-		}
+	public PacienteRepository(EntityManager em) {
+		super(em);
 	}
 	
 	public List<Paciente> findAll() throws RepositoryException {
-		EntityManager em = JPAUtil.getEntityManager();
+		EntityManager em = getEntityManager();
 		StringBuffer jpql = new StringBuffer();
 		jpql.append("SELECT ");
 		jpql.append(" p ");
@@ -57,9 +32,5 @@ public class PacienteRepository {
 		return query.getResultList();
 		 
 	}
-	public Paciente findId(Paciente paciente) throws RepositoryException {
-		EntityManager em = JPAUtil.getEntityManager();
-		return em.find(paciente.getClass(), paciente.getId());
-	}
-
+	
 }

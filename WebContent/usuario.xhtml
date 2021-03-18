@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+<ui:define name="content">
+	<h:form>
+ 		<p:growl id="growl" showDetail="true" />
+		<p:panel header="Cadastro de Usuario" >
+			<h:panelGrid columns="2">
+			
+				<p:commandLink value="Nome: " onclick="PF('dlg').show()"/>
+				<p:inputText value="#{usuarioController.entity.nome}"/>
+			
+				<p:outputLabel value="Login: "/>
+				<p:inputText value="#{usuarioController.entity.login}"/>
+			
+				<p:outputLabel value="Senha: "/>
+				<p:inputText value="#{usuarioController.entity.senha}"/>
+				
+			</h:panelGrid>
+			<f:facet name="footer">
+				<p:commandButton 
+					value="Salvar" 
+					icon="far fa-save"
+					actionListener="#{usuarioController.salvar}"
+					process="@this @form"
+					update="@form"/>
+				<p:commandButton 
+					value="Excluir" 
+					icon="far fa-trash-alt"
+					actionListener="#{usuarioController.excluir}"
+					process="@this @form"
+					update="@form"/>
+				<p:commandButton 
+					value="Limpar"
+					icon="fas fa-eraser"
+					actionListener="#{usuarioController.limpar}"
+					process="@this"
+					update="@form"/>
+			</f:facet>
+		</p:panel>
+			<p:dialog id="dialog"  header="Cosulta de Usuario" widgetVar="dlg" 
+				height="300" width="500" 
+				showEffect="fade" modal="true">
+				
+				<p:inputText/> 
+				<p:commandButton value="Pesquisar" 
+						actionListener="#{usuarioController.pesquisar}"
+						process="@this"
+						update="dataTable"/>
+						
+				<p:dataTable id="dataTable" 
+							 value="#{usuarioController.listaUsuario}"
+							 var="obj">		
+							 
+					<p:column >
+						<f:facet name="header">Nome</f:facet>
+						<p:outputLabel value="#{obj.nome}"/>
+					</p:column>	
+							 
+					<p:column >
+						<f:facet name="header">Login</f:facet>
+						<p:outputLabel value="#{obj.login}"/>
+					</p:column>	
+							 
+					<p:column >
+						<f:facet name="header">Senha</f:facet>
+						<p:outputLabel value="#{obj.senha}"/>
+					</p:column>	
+					
+					<p:column >
+						<f:facet name="header">Ação</f:facet>
+						<p:commandButton value="Editar" 
+			    			actionListener="#{usuarioController.editar(obj)}" 
+			    			process="@this"
+			    			update="@form "/>
+					</p:column>			
+				</p:dataTable>
+				
+			</p:dialog>
+	</h:form>
+</ui:define>
+</ui:composition>
