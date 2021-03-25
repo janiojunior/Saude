@@ -46,6 +46,7 @@ public abstract class Controller<T extends DefaultEntity<T>> implements Serializ
 			repo.remove(getEntity());
 			repo.commitTransaction();
 			
+			limpar();
 			Util.addInfoMessage("Paciente removido com sucesso.");
 		} catch (RepositoryException e) {
 			Util.addErrorMessage(e.getMessage());

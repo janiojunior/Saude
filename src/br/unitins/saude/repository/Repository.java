@@ -66,14 +66,16 @@ public class Repository<T extends DefaultEntity<T>> {
 	public void remove(T t) throws RepositoryException {
 		try {
 			EntityManager em = getEntityManager();
-			em.remove(t);
+			T obj = em.merge(t);
+			em.remove(obj);
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Erro ao executar o método Remove do Repository");
 			throw new RepositoryException("Erro ao Remover");
 		}
 	}
 
-	public T findId(int id) throws RepositoryException {
+	public T findById(int id) throws RepositoryException {
 		try {
 			// obtendo o tipo da classe de forma generica (a classe deve ser publica)
 			final ParameterizedType type = 	(ParameterizedType) getClass().getGenericSuperclass();
