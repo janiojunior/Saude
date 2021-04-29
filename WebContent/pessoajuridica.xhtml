@@ -7,50 +7,46 @@
 <ui:define name="content">
 	<h:form>
  		<p:growl id="growl" showDetail="true" />
-		<p:panel header="Cadastro de Usuario" >
+		<p:panel header="Cadastro de Pessoa Jurídica" >
 			<h:panelGrid columns="2">
-				<p:commandLink value="CPF: " 
-					actionListener="#{usuarioController.abrirPessoaFisicaListing}"
+			
+				<p:commandLink value="CNPJ: " 
+					actionListener="#{pessoaJuridicaController.abrirPessoaJuridicaListing}"
 					process="@this" update="@none">
-					 <p:ajax event="dialogReturn" listener="#{usuarioController.obterPessoaFisicaListing}" 
+					 <p:ajax event="dialogReturn" listener="#{pessoaJuridicaController.obterPessoaJuridicaListing}" 
 					  update="@form"/>
 				</p:commandLink>
-				<p:inputText value="#{usuarioController.entity.pessoaFisica.cpf}"
-							 disabled="true"/>
+				<p:inputText id="itcnpj" value="#{pessoaJuridicaController.entity.cnpj}"/>
 				
 				<p:outputLabel value="Nome: "/>
-				<p:inputText value="#{usuarioController.entity.pessoaFisica.nome}"
-							 />
-			
-				<p:outputLabel value="Login: "/>
-				<p:inputText value="#{usuarioController.entity.login}"/>
-			
-				<p:outputLabel value="Senha: "/>
-				<p:inputText value="#{usuarioController.entity.senha}"/>
+				<p:inputText value="#{pessoaJuridicaController.entity.nome}"/>
 				
 			</h:panelGrid>
 			<f:facet name="footer">
 				<p:commandButton 
 					value="Salvar" 
 					icon="far fa-save"
-					actionListener="#{usuarioController.salvar}"
+					actionListener="#{pessoaJuridicaController.salvar}"
 					process="@this @form"
 					update="@form"/>
 				<p:commandButton 
 					value="Excluir" 
 					icon="far fa-trash-alt"
-					actionListener="#{usuarioController.excluir}"
+					actionListener="#{pessoaJuridicaController.excluir}"
 					process="@this @form"
-					update="@form"/>
+					update="@form">
+					<p:confirm header="Confirmação" 
+						message="Deseja excluir o pessoaJuridica ?" 
+						icon="pi pi-info-circle"/>
+				</p:commandButton>
 				<p:commandButton 
 					value="Limpar"
 					icon="fas fa-eraser"
-					actionListener="#{usuarioController.limpar}"
+					actionListener="#{pessoaJuridicaController.limpar}"
 					process="@this"
 					update="@form"/>
 			</f:facet>
 		</p:panel>
-			
 	</h:form>
 </ui:define>
 </ui:composition>

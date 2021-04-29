@@ -10,24 +10,34 @@
 		<p:panel header="Cadastro de Paciente" >
 			<h:panelGrid columns="2">
 			
-				<p:commandLink value="Nome: " 
+				<p:commandLink value="CPF: " 
 					actionListener="#{pacienteController.abrirPacienteListing}"
 					process="@this" update="@none">
 					 <p:ajax event="dialogReturn" listener="#{pacienteController.obterPacienteListing}" 
 					  update="@form"/>
 				</p:commandLink>
-				<p:inputText id="itcpf" value="#{pacienteController.entity.cpf}"/>
+				<p:inputMask 
+					id="itcpf" 
+					validateMask="true"
+					mask="999.999.999-99"
+					value="#{pacienteController.entity.pessoaFisica.cpf}"
+					disabled="#{pacienteController.entity.id != null}" >
+					<p:ajax event="blur" update="@form" process="@this" listener="#{pacienteController.buscarPessoaFisica}"/>
+				</p:inputMask>
 				
-				<p:outputLabel value="Nome: "/>
-				<p:inputText value="#{pacienteController.entity.nome}"/>
+				<p:outputLabel value="Nome: " />
+				<p:inputText id="itnome" value="#{pacienteController.entity.pessoaFisica.nome}"
+							 disabled="#{pacienteController.entity.id == null}" />
 				
 				<p:commandLink value="Estado: " 
 					actionListener="#{pacienteController.abrirEstadoListing}"
-					process="@this" update="@none">
+					process="@this" update="@none"
+					disabled="#{pacienteController.entity.id == null}" >
 					 <p:ajax event="dialogReturn" listener="#{pacienteController.obterEstadoListing}" 
 					  update="itEstado"/>
 				</p:commandLink>
-				<p:inputText id="itEstado" value="#{pacienteController.entity.estado.nome}"/>
+				<p:inputText id="itEstado" value="#{pacienteController.entity.estado.nome}"
+							 disabled="#{pacienteController.entity.id == null}" />
 				
 			</h:panelGrid>
 			<f:facet name="footer">

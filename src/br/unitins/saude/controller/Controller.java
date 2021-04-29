@@ -7,7 +7,7 @@ import br.unitins.saude.application.Util;
 import br.unitins.saude.model.DefaultEntity;
 import br.unitins.saude.repository.Repository;
 
-public abstract class Controller<T extends DefaultEntity<T>> implements Serializable {
+public abstract class Controller<T extends DefaultEntity<? super T>> implements Serializable {
 	
 	private static final long serialVersionUID = -7172376339410561672L;
 	

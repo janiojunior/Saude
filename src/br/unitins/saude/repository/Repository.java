@@ -8,7 +8,7 @@ import br.unitins.saude.application.JPAUtil;
 import br.unitins.saude.application.RepositoryException;
 import br.unitins.saude.model.DefaultEntity;
 
-public class Repository<T extends DefaultEntity<T>> {
+public class Repository<T extends DefaultEntity<? super T>> {
 
 	protected EntityManager entityManager = null;
 

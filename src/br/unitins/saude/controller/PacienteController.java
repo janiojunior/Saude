@@ -1,23 +1,18 @@
 package br.unitins.saude.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
 import br.unitins.saude.application.RepositoryException;
 import br.unitins.saude.controller.listing.EstadoListing;
-import br.unitins.saude.controller.listing.Listing;
 import br.unitins.saude.controller.listing.PacienteListing;
 import br.unitins.saude.model.Estado;
 import br.unitins.saude.model.Paciente;
+import br.unitins.saude.model.PessoaFisica;
 import br.unitins.saude.repository.PacienteRepository;
+import br.unitins.saude.repository.PessoaFisicaRepository;
 
 @Named
 @ViewScoped
@@ -29,9 +24,29 @@ public class PacienteController extends Controller<Paciente> {
 	public Paciente getEntity() {
 		if (entity == null) {
 			entity = new Paciente();
+			entity.setPessoaFisica(new PessoaFisica());
 			entity.setEstado(new Estado());
 		}
 		return entity;
+	}
+	
+	public void buscarPessoaFisica() {
+		PessoaFisicaRepository repo = new PessoaFisicaRepository();
+		PacienteRepository repoPaciente = new PacienteRepository();
+		try {
+			PessoaFisica pf = repo.findByCpf(getEntity().getPessoaFisica().getCpf());
+			if (pf != null) {
+				Paciente p = repoPaciente.findByPessoaFisica(pf);
+				if (p != null)
+					setEntity(p);
+				else
+					getEntity().setPessoaFisica(pf);
+			}
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	public void abrirPacienteListing() {

@@ -13,7 +13,7 @@ import br.unitins.saude.model.Estado;
 import br.unitins.saude.repository.EstadoRepository;
 import br.unitins.saude.repository.Repository;
 
-public abstract class Listing<T extends DefaultEntity<T>> implements Serializable {
+public abstract class Listing<T extends DefaultEntity<? super T>> implements Serializable {
 
 	private static final long serialVersionUID = 7641180780489288293L;
 	private String page;
