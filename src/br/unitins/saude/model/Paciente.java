@@ -16,7 +16,8 @@ public class Paciente extends DefaultEntity<Paciente> {
 	private PessoaFisica pessoaFisica;
 
 	@ManyToOne
-	private Estado estado;
+	@JoinColumn(name = "id_municipio")
+	private Municipio municipio;
 
 	public PessoaFisica getPessoaFisica() {
 		return pessoaFisica;
@@ -26,12 +27,12 @@ public class Paciente extends DefaultEntity<Paciente> {
 		this.pessoaFisica = pessoaFisica;
 	}
 
-	public Estado getEstado() {
-		return estado;
+	public Municipio getMunicipio() {
+		return municipio;
 	}
 
-	public void setEstado(Estado estado) {
-		this.estado = estado;
+	public void setMunicipio(Municipio municipio) {
+		this.municipio = municipio;
 	}
 
 	@Override

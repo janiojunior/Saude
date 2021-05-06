@@ -9,6 +9,7 @@ import br.unitins.saude.application.RepositoryException;
 import br.unitins.saude.controller.listing.EstadoListing;
 import br.unitins.saude.controller.listing.PacienteListing;
 import br.unitins.saude.model.Estado;
+import br.unitins.saude.model.Municipio;
 import br.unitins.saude.model.Paciente;
 import br.unitins.saude.model.PessoaFisica;
 import br.unitins.saude.repository.PacienteRepository;
@@ -25,7 +26,8 @@ public class PacienteController extends Controller<Paciente> {
 		if (entity == null) {
 			entity = new Paciente();
 			entity.setPessoaFisica(new PessoaFisica());
-			entity.setEstado(new Estado());
+			entity.setMunicipio(new Municipio());
+			entity.getMunicipio().setEstado(new Estado());
 		}
 		return entity;
 	}
@@ -58,13 +60,13 @@ public class PacienteController extends Controller<Paciente> {
 		setEntity(event.getObject());
 	}
 	
-	public void abrirEstadoListing() {
-		EstadoListing listing = new EstadoListing();
-		listing.open();
-	}
-	
-	public void obterEstadoListing(SelectEvent<Estado> event) {
-		getEntity().setEstado(event.getObject());
-	}
+//	public void abrirEstadoListing() {
+//		EstadoListing listing = new EstadoListing();
+//		listing.open();
+//	}
+//	
+//	public void obterEstadoListing(SelectEvent<Estado> event) {
+//		getEntity().setEstado(event.getObject());
+//	}
 	
 }

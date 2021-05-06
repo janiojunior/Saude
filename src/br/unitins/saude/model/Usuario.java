@@ -3,6 +3,7 @@ package br.unitins.saude.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -17,6 +18,12 @@ public class Usuario extends DefaultEntity<Usuario> {
 	private String login;
 	
 	private String senha;
+	
+	private Perfil perfil;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_municipio")
+	private Municipio municipio;
 	
 	public PessoaFisica getPessoaFisica() {
 		return pessoaFisica;
@@ -41,7 +48,21 @@ public class Usuario extends DefaultEntity<Usuario> {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	
 
+	public Perfil getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
+	}
+
+	public Municipio getMunicipio() {
+		return municipio;
+	}
+
+	public void setMunicipio(Municipio municipio) {
+		this.municipio = municipio;
+	}
+	
 }

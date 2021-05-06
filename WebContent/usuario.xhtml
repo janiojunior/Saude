@@ -28,6 +28,45 @@
 				<p:outputLabel value="Senha: "/>
 				<p:inputText value="#{usuarioController.entity.senha}"/>
 				
+				<p:outputLabel value="Perfil: "/>
+				<p:selectOneMenu 
+					value="#{usuarioController.entity.perfil}">
+					<f:selectItem itemLabel="Selecione ..."/>
+					<f:selectItems 
+						value="#{usuarioController.listaPerfil}"
+						var="obj"
+						itemLabel="#{obj.label}"
+						itemValue="#{obj}"/>
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Estado: "/>
+				<p:selectOneMenu 
+					value="#{usuarioController.estado}">
+					<f:selectItem itemLabel="Selecione ..."/>
+					<f:selectItems 
+						value="#{usuarioController.listaEstado}"
+						var="obj"
+						itemLabel="#{obj.nome} - #{obj.sigla}"
+						itemValue="#{obj}"/>
+					<p:ajax event="change" 
+						process="@this" 
+						update="somMunicipio" 
+						listener="#{usuarioController.filtrarMunicipios}"/>
+				</p:selectOneMenu>
+				
+				<p:outputLabel value="Município: "/>
+				<p:selectOneMenu 
+					id="somMunicipio"
+					value="#{usuarioController.entity.municipio}"
+					disabled="#{usuarioController.estado.id == null}">
+					<f:selectItem itemLabel="Selecione ..."/>
+					<f:selectItems 
+						value="#{usuarioController.listaMunicipio}"
+						var="obj"
+						itemLabel="#{obj.nome} - #{obj.estado.sigla}"
+						itemValue="#{obj}"/>
+				</p:selectOneMenu>
+				
 			</h:panelGrid>
 			<f:facet name="footer">
 				<p:commandButton 
