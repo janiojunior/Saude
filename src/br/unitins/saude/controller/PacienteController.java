@@ -1,5 +1,8 @@
 package br.unitins.saude.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -8,12 +11,16 @@ import org.primefaces.event.SelectEvent;
 import br.unitins.saude.application.RepositoryException;
 import br.unitins.saude.controller.listing.EstadoListing;
 import br.unitins.saude.controller.listing.PacienteListing;
+import br.unitins.saude.controller.listing.PessoaFisicaListing;
 import br.unitins.saude.model.Estado;
 import br.unitins.saude.model.Municipio;
 import br.unitins.saude.model.Paciente;
 import br.unitins.saude.model.PessoaFisica;
+import br.unitins.saude.model.Usuario;
+import br.unitins.saude.repository.MunicipioRepository;
 import br.unitins.saude.repository.PacienteRepository;
 import br.unitins.saude.repository.PessoaFisicaRepository;
+import br.unitins.saude.repository.UsuarioRepository;
 
 @Named
 @ViewScoped
@@ -51,22 +58,33 @@ public class PacienteController extends Controller<Paciente> {
 		
 	}
 	
-	public void abrirPacienteListing() {
-		PacienteListing listing = new PacienteListing();
+	public void abrirPessoaFisicaListing() {
+		PessoaFisicaListing listing = new PessoaFisicaListing();
 		listing.open();
 	}
 	
-	public void obterPacienteListing(SelectEvent<Paciente> event) {
-		setEntity(event.getObject());
+	public void obterPessoaFisicaListing(SelectEvent<PessoaFisica> event) {
+		getEntity().setPessoaFisica(event.getObject());
+		
+		PacienteRepository repo = new PacienteRepository();
+		try {
+			Paciente p = repo.findByPessoaFisica(getEntity().getPessoaFisica());
+			if (p != null) {
+				setEntity(repo.findByPessoaFisica(getEntity().getPessoaFisica()));
+			}
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+		}
 	}
 	
-//	public void abrirEstadoListing() {
-//		EstadoListing listing = new EstadoListing();
-//		listing.open();
-//	}
-//	
-//	public void obterEstadoListing(SelectEvent<Estado> event) {
-//		getEntity().setEstado(event.getObject());
-//	}
+	public List<Municipio> completeMunicipio(String filtro) {
+		MunicipioRepository repo = new MunicipioRepository();
+		try {
+			return repo.findByNome(filtro, 5);
+		} catch (RepositoryException e) {
+			e.printStackTrace();
+			return new ArrayList<Municipio>();
+		}
+	}
 	
 }

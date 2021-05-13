@@ -11,9 +11,9 @@
 			<h:panelGrid columns="2">
 			
 				<p:commandLink value="CPF: " 
-					actionListener="#{pacienteController.abrirPacienteListing}"
+					actionListener="#{pacienteController.abrirPessoaFisicaListing}"
 					process="@this" update="@none">
-					 <p:ajax event="dialogReturn" listener="#{pacienteController.obterPacienteListing}" 
+					 <p:ajax event="dialogReturn" listener="#{pacienteController.obterPessoaFisicaListing}" 
 					  update="@form"/>
 				</p:commandLink>
 				<p:inputMask 
@@ -29,15 +29,21 @@
 				<p:inputText id="itnome" value="#{pacienteController.entity.pessoaFisica.nome}"
 							 disabled="#{pacienteController.entity.id == null}" />
 				
-				<p:commandLink value="Estado: " 
-					actionListener="#{pacienteController.abrirEstadoListing}"
-					process="@this" update="@none"
-					disabled="#{pacienteController.entity.id == null}" >
-					 <p:ajax event="dialogReturn" listener="#{pacienteController.obterEstadoListing}" 
-					  update="itEstado"/>
-				</p:commandLink>
-				<p:inputText id="itEstado" value="#{pacienteController.entity.estado.nome}"
-							 disabled="#{pacienteController.entity.id == null}" />
+				
+                <p:outputLabel value="Município: " />
+                <p:autoComplete id="acMunicipio" 
+                				value="#{pacienteController.entity.municipio}"
+                				placeholder="Informe a cidade ..."
+                				forceSelection="true"
+                				dropdown="true"
+                				minQueryLength="1"
+                				moreText="Existem mais cidades ..."
+                				maxResults="4"
+                				var="obj"
+                				itemLabel="#{obj.nome}"
+                				itemValue="#{obj}"
+                            	completeMethod="#{pacienteController.completeMunicipio}" 
+                            	scrollHeight="250"/>				
 				
 			</h:panelGrid>
 			<f:facet name="footer">

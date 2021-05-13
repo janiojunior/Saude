@@ -38,6 +38,10 @@ public class MunicipioRepository extends Repository<Municipio> {
 	}
 	
 	public List<Municipio> findByNome(String nome) throws RepositoryException {
+		return findByNome(nome, null);
+	}
+	
+	public List<Municipio> findByNome(String nome, Integer maxResults) throws RepositoryException {
 		EntityManager em = getEntityManager();
 		StringBuffer jpql = new StringBuffer();
 		jpql.append("SELECT ");
@@ -50,6 +54,9 @@ public class MunicipioRepository extends Repository<Municipio> {
 		
 		Query query = em.createQuery(jpql.toString());
 		query.setParameter("nome", "%" + nome + "%");
+		
+		if (maxResults != null)
+			 query.setMaxResults(maxResults);
 		
 		return query.getResultList();
 	}

@@ -1,6 +1,7 @@
 package br.unitins.saude.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -12,7 +13,7 @@ public class Municipio extends DefaultEntity<Municipio>{
 	private String nome;
 	private String sigla;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_estado")
 	private Estado estado;
 
