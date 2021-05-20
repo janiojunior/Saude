@@ -1,11 +1,14 @@
 package br.unitins.saude.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 @MappedSuperclass
 public class DefaultEntity<T> implements Serializable{
@@ -16,6 +19,9 @@ public class DefaultEntity<T> implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	private LocalDateTime dataCadastro;
+
+	private LocalDateTime dataAlteracao;
 	
 	public Integer getId() {
 		return id;
@@ -23,6 +29,34 @@ public class DefaultEntity<T> implements Serializable{
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public LocalDateTime getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(LocalDateTime dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	public LocalDateTime getDataAlteracao() {
+		return dataAlteracao;
+	}
+
+	public void setDataAlteracao(LocalDateTime dataAlteracao) {
+		this.dataAlteracao = dataAlteracao;
+	}
+	
+	@PrePersist
+	public void onBeforeInsert() {
+		// será executado antes do insert em uma tabela
+		setDataCadastro(LocalDateTime.now());
+	}
+	
+	@PreUpdate
+	public void preUpdate() {
+		// será executado antes do update em uma tabela
+		setDataAlteracao(LocalDateTime.now());
 	}
 
 	@Override

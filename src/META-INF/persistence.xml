@@ -12,6 +12,7 @@
 		<class>br.unitins.saude.model.Pessoa</class>
 		<class>br.unitins.saude.model.PessoaFisica</class>
 		<class>br.unitins.saude.model.PessoaJuridica</class>
+		<class>br.unitins.saude.model.RecuperarSenha</class>
 		<class>br.unitins.saude.model.Usuario</class>
 
 		<properties>
