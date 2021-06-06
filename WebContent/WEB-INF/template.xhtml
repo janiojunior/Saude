@@ -21,7 +21,7 @@
         <ui:include src="./topbar.xhtml" />
 
         <div class="layout-content">
-        	<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+        	<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
 
 		    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
 		        <p:graphicImage name="/images/processando.gif"/>

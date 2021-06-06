@@ -21,6 +21,31 @@ public class UsuarioRepository extends Repository<Usuario> {
 		super(em);
 	}
 	
+	public Usuario findByLogin(String login, String senha) throws RepositoryException {
+		EntityManager em = getEntityManager();
+		StringBuffer jpql = new StringBuffer();
+		jpql.append("SELECT ");
+		jpql.append(" u ");
+		jpql.append("FROM ");
+		jpql.append(" Usuario u ");
+		jpql.append("WHERE ");
+		jpql.append(" u.login = :login ");
+		jpql.append(" AND u.senha = :senha ");
+		
+		Query query = em.createQuery(jpql.toString());
+		query.setParameter("login", login);
+		query.setParameter("senha", senha);
+		
+		Usuario usuario = null;
+		try {
+			usuario = (Usuario) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return usuario;
+	}
+	
 	
 	public Usuario findByEmail(String email) throws RepositoryException {
 		EntityManager em = getEntityManager();

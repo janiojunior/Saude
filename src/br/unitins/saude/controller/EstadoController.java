@@ -5,7 +5,7 @@ import javax.inject.Named;
 
 import org.primefaces.event.SelectEvent;
 
-import br.unitins.saude.controller.listing.EstadoListing;
+import br.unitins.saude.controller.listing.EstadoListingSql;
 import br.unitins.saude.model.Estado;
 
 @Named
@@ -23,7 +23,8 @@ public class EstadoController extends Controller<Estado> {
 	}
 	
 	public void abrirEstadoListing() {
-		EstadoListing listing = new EstadoListing();
+//		EstadoListing listing = new EstadoListing();
+		EstadoListingSql listing = new EstadoListingSql();
 		listing.open();
 	}
 	

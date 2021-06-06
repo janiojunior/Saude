@@ -1,14 +1,20 @@
 package br.unitins.saude.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.file.UploadedFile;
 
 import br.unitins.saude.application.RepositoryException;
+import br.unitins.saude.application.Security;
+import br.unitins.saude.application.Util;
 import br.unitins.saude.controller.listing.PessoaFisicaListing;
 import br.unitins.saude.model.Estado;
 import br.unitins.saude.model.Municipio;
@@ -26,17 +32,68 @@ public class UsuarioController extends Controller<Usuario> {
 	private static final long serialVersionUID = -1239534887785769178L;
 	
 	private List<Municipio> listaMunicipio = null;
-	
 	private Estado estado = null;
-	
 	private List<Estado> listaEstado = null;
+	
+	private InputStream fotoInputStream = null;
+	private String nomeFoto = null;
+	
+	public InputStream getFotoInputStream() {
+		return fotoInputStream;
+	}
+
+	public void setFotoInputStream(InputStream fotoInputStream) {
+		this.fotoInputStream = fotoInputStream;
+	}
+
+	public String getNomeFoto() {
+		if (nomeFoto == null)
+			nomeFoto = "Selecione uma foto...";
+		return nomeFoto;
+	}
+	
+	public void upload(FileUploadEvent event) {
+		System.out.println("Entrou");
+		UploadedFile uploadFile = event.getFile();
+		System.out.println("nome arquivo: " + uploadFile.getFileName());
+		System.out.println("tipo: " + uploadFile.getContentType());
+		System.out.println("tamanho: " + uploadFile.getSize());
+
+		if (uploadFile.getContentType().equals("image/png")) {
+			try {
+				fotoInputStream = uploadFile.getInputStream();
+				nomeFoto = uploadFile.getFileName();
+				System.out.println("inputStream: " + uploadFile.getInputStream().toString());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Util.addInfoMessage("Upload realizado com sucesso.");
+		} else {
+			Util.addErrorMessage("O tipo da image deve ser png.");
+		}
+
+	}
 	
 	public Estado getEstado() {
 		if (estado == null)
 			estado = new Estado();
 		return estado;
 	}
-
+	
+	@Override
+	public void salvar() {
+		// salvando a imagem
+		if (! Util.saveImageUsuario(fotoInputStream, "png", getEntity().getId())) {
+			Util.addErrorMessage("Erro ao salvar. Não foi possível salvar a imagem do usuário.");
+			return;
+		}
+		// gerando o hash da senha
+		getEntity().setSenha(Security.hash(getEntity()));
+		// salvando no banco
+		super.salvar();
+	}
+	
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
@@ -47,6 +104,7 @@ public class UsuarioController extends Controller<Usuario> {
 		estado = null;
 		listaEstado = null;
 		listaMunicipio = null;
+		nomeFoto = null;
 	}
 
 	@Override
@@ -73,7 +131,8 @@ public class UsuarioController extends Controller<Usuario> {
 			if (usu != null) {
 				setEntity(repo.findByPessoaFisica(getEntity().getPessoaFisica()));
 			}
-			setEstado(getEntity().getMunicipio().getEstado());
+			if (getEntity().getMunicipio() != null)
+				setEstado(getEntity().getMunicipio().getEstado());
 			filtrarMunicipios();
 		} catch (RepositoryException e) {
 			e.printStackTrace();
